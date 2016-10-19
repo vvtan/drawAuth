@@ -36,5 +36,6 @@ public class Main {
         SignComparator comparator = SignComparator.build(data1,data2);
         System.out.println(comparator.simpleMatch());
         System.out.println(comparator.moveMatch());
+        System.out.println(comparator.smallMatch());
     }
 }

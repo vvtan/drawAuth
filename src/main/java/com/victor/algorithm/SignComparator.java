@@ -129,21 +129,78 @@ public class SignComparator {
     }
 
     public float smallMatch(){
-        List<Integer> shapeA = new ArrayList<>();
-        List<Integer> shapeB = new ArrayList<>();
+        List<Integer> shapeSrc = getShape(compactSrc);
+        List<Integer> shapeTarget = getShape(compactTarget);
+        System.out.println(shapeSrc);
+        System.out.println(shapeTarget);
 
-        return 0;
+        return compareShape(shapeSrc,shapeTarget);
     }
 
-    private void getShape(List<Byte> data){
-        List<Integer> shape = new ArrayList<>();
-        boolean flag = true;
-        int line=0;
-        for (int i=0;i<compactSrc.size();i++){
-
-
+    public float compareShape(List<Integer> shapeSrc, List<Integer> shapeTarget){
+        int sizeA = shapeSrc.size();
+        int sizeB = shapeTarget.size();
+        float count = 0;
+        float result = 0.00f;
+        int differ = sizeB-sizeA;
+        if (differ>0){
+            for (int off=0;off<=differ;off++){
+                int tmp = 0;
+                for (int i=0;i<sizeA;i++){
+                    float per = (float) (shapeSrc.get(i))/shapeTarget.get(i+off);
+                    if (per>=0.75 && per<=1.3){
+                        tmp++;
+                    }
+                }
+                if (tmp>=count){
+                    count=tmp;
+                }
+            }
+            result = count/sizeA;
+        }else{
+            differ = -differ;
+            for (int off=0;off<=differ;off++){
+                int tmp = 0;
+                for (int i=0;i<sizeB;i++){
+                    float per = (float) (shapeTarget.get(i))/shapeSrc.get(i+off);
+                    if (per>=0.75 && per<=1.3){
+                        tmp++;
+                    }
+                }
+                if (tmp>=count){
+                    count=tmp;
+                }
+            }
+            result = count/sizeB;
         }
 
+        return result;
+    }
+
+    private List<Integer> getShape(List<Byte> data){
+        List<Integer> shape = new ArrayList<>();
+        boolean flag = false;
+        Integer line=0;
+        for (int i=0;i<compactSrc.size();i++){
+            if (flag){
+                if (compactSrc.get(i)==1){
+                    line++;
+                }else {
+                    shape.add(line);
+                    flag = false;
+                }
+            }else {
+                if (compactSrc.get(i)==1){
+                    line = 0;
+                    line++;
+                    flag = true;
+                }
+            }
+            if (flag && i==compactSrc.size()-1){
+                shape.add(line);
+            }
+        }
+        return shape;
     }
 
 
