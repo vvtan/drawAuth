@@ -47,18 +47,10 @@ public class AuthController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/share")
-    public String share(@RequestBody String jsonData){
+    public Map<String, Object> share(@RequestBody String jsonData){
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         Auth auth = new Auth();
         String draw = jsonObject.getString("draw");
-        JSONArray drawArray = JSONObject.parseArray(draw);
-        byte matrix[][] = new byte[100][100];
-        for (int i = 0; i < 100; i++) {
-            JSONArray tmp = drawArray.getJSONArray(i);
-            for (int j = 0; j < 100; j++) {
-                matrix[i][j] = tmp.getByte(j);
-            }
-        }
         String message = jsonObject.getString("message");
         auth.setImage_matrix(draw);
         auth.setMessage(message);
@@ -66,14 +58,25 @@ public class AuthController {
         String shareURL = "http://192.168.1.202:8099/receiver.html?id=" + authNew.getId();
         authNew.setShare_resources(shareURL);
         String redirect = "http://127.0.0.1:8099/success.html";
-        return "{\"status\":\"ok\",\"shareURL\":\""+ redirect + "?url="+ shareURL +"\"}";
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", "ok");
+        result.put("shareURL", redirect + "?url="+ shareURL);
+//        return "{\"status\":\"ok\",\"shareURL\":\""+ redirect + "?url="+ shareURL +"\"}";
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/auth")
-    public String auth(@RequestBody String jsonData){
-        JSONObject jsonObject = JSONObject.parseObject(jsonData);
-        return "{\"status\":\"ok\"}";
+    public Map<String, Object> auth(@RequestBody String jsonData){
+        float rate = authService.getAuthRate(jsonData);
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", "ok");
+        result.put("rate", rate);
+//        return "{\"status\":\"ok\",\"rate\":\""+ rate +"\"}";
+        return result;
     }
+
+
+
 
 
 
