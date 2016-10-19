@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>我的消息</title>
+	<link rel="stylesheet" href="https://bencentra.github.io/jq-signature/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/default.css">
+	<style>
+	/*body初始状态,清间距,设置背景*/
+        body
+        {
+            margin: 0;
+            padding: 0;
+        }
+        /*超链接的样式:蓝色按钮*/
+        a
+        {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            font:normal normal normal 18px/50px 'Microsoft Yahei';
+            background-color: #00b3ee;
+            text-align: center;
+            margin: 100px 200px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        /*人为制造一个占据整个屏幕的Div,其透明度为0.7且z-index为9999使之前的页面被压在底层无法点击*/
+        #fullScreen
+        {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            opacity: 0.7;
+            background-color: black;
+            z-index: 9999;
+        }
+        /*浮层,可随意设置大小宽高，但是z-index必须比上面fullScreen大才能显示出来*/
+        #floatLayer
+        {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            left: 34%;
+            top: 15%;
+            background-color: white;
+            z-index: 10000;
+        }
+	</style>
+</head>
+<body>
+	<div class="htmleaf-container">
+		<header class="htmleaf-header">
+			<h1>创意验证码<span>我们都爱画</span></h1>
+		</header>
+		<div class="container">
+			<div class="row">
+		<div class="col-xs-12">
+			<h3>留言：</h3>
+			<div class="text-input">
+				hhhhhhhhhhhhhh
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="js/jq-signature.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//清除之前的样式
+			$("#fullScreen,#floatLayer").remove();
+			$("body").append(
+                //占据整个屏幕Div
+                "<div id='fullScreen'></div>"+
+                //浮层区
+                "<div id='floatLayer'><div class='js-signature'></div>" +
+                "<div><p><button id='clearBtn' class='btn btn-default' onclick='clearCanvas();'>Clear Canvas</button>&nbsp;<button id='saveBtn' class='btn btn-default' onclick='saveSignature();' disabled>Save Signature</button></p></div></div>"
+            );
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature({
+					width: 300,
+					height: 300
+				});
+			}
+			$('.js-signature').eq(0).on('jq.signature.changed', function() {
+				$('#saveBtn').attr('disabled', false);
+			});
+		});
+
+		function clearCanvas() {
+			$('.js-signature').eq(0).jqSignature('clearCanvas');;
+			$('#saveBtn').attr('disabled', true);
+		}
+
+		function saveSignature() {
+			$('#signature').empty();
+			var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+			var img = $('<img>').attr('src', dataUrl);
+			$('#signature').append($('<p>').text("Here's your signature:"));
+			$('#signature').append(img);
+			$("#fullScreen,#floatLayer").remove();
+		}
+
+		function add(a, b) {
+			return a + b;
+		}
+
+		function getCanvasRawData(c){
+			var ctx = c.getContext('2d');
+			return ctx.getImageData(0, 0, c.width, c.height);
+		}
+		
+		function parseCanvasData(data, len_of_row){
+			var data_array = [];
+			var pixel_array = [];
+			var row = [];
+			for (var i=0; i < data.length; i++) {
+				pixel_array.push(data[i]);
+				if ((i + 1) % 4 == 0) {
+					var value = 0;
+					if (pixel_array.reduce(add, 0)) {
+						value = 1;
+					}
+					row.push(value);
+					pixel_array = [];
+				}
+				if (row.length == len_of_row) {
+					data_array.push(row);
+					row = [];
+				}
+			}
+			return data_array;
+		}
+	</script>
+</body>
+</html>
