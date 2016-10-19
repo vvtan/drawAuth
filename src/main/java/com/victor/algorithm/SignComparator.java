@@ -61,16 +61,6 @@ public class SignComparator {
     }
 
     public float match(){
-//        float result;
-//        result = simpleMatch();
-//        if (result>0.7){
-//            return result;
-//        }
-//        result = moveMatch();
-//        if (result>=0.7){
-//            return result;
-//        }
-//        result = smallMatch();
 
         return Math.max(Math.max(simpleMatch(),moveMatch()),smallMatch());
     }
@@ -105,7 +95,9 @@ public class SignComparator {
                 }
             }
         }
-        return match_1/total_1+match_0/total_0;
+        float rs = match_1/total_1+match_0/total_0;
+        System.out.println("simple:"+rs);
+        return rs;
     }
 
     public float moveMatch(){
@@ -155,17 +147,17 @@ public class SignComparator {
         }else {
             result = match_1/total_1+match_0/total_0;
         }
-
+        System.out.println("move:"+result);
         return result;
     }
 
     public float smallMatch(){
         List<Integer> shapeSrc = getShape(compactSrc);
         List<Integer> shapeTarget = getShape(compactTarget);
-        System.out.println(shapeSrc);
-        System.out.println(shapeTarget);
 
-        return compareShape(shapeSrc,shapeTarget);
+        float rs = compareShape(shapeSrc,shapeTarget);
+        System.out.println("small:"+rs);
+        return rs;
     }
 
     public float compareShape(List<Integer> shapeSrc, List<Integer> shapeTarget){

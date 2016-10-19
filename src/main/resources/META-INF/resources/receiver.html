@@ -188,7 +188,7 @@
 			}).success(function(data){
 				if (data.status=='ok'){
 					$("#fullScreen,#floatLayer").remove();
-					alert('匹配成功！');
+					alert(data.rate);
 				}else{
 					alert('匹配失敗！');
 				}
@@ -205,5 +205,6 @@
 			if (r != null) return unescape(r[2]); return null; //返回参数值
 		}
 	</script>
+		</div>
 </body>
 </html>
