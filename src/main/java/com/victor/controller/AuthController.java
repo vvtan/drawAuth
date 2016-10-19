@@ -51,14 +51,6 @@ public class AuthController {
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         Auth auth = new Auth();
         String draw = jsonObject.getString("draw");
-        JSONArray drawArray = JSONObject.parseArray(draw);
-        byte matrix[][] = new byte[100][100];
-        for (int i = 0; i < 100; i++) {
-            JSONArray tmp = drawArray.getJSONArray(i);
-            for (int j = 0; j < 100; j++) {
-                matrix[i][j] = tmp.getByte(j);
-            }
-        }
         String message = jsonObject.getString("message");
         auth.setImage_matrix(draw);
         auth.setMessage(message);
@@ -71,9 +63,12 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/auth")
     public String auth(@RequestBody String jsonData){
-        JSONObject jsonObject = JSONObject.parseObject(jsonData);
-        return "{\"status\":\"ok\"}";
+        float rate = authService.getAuthRate(jsonData);
+        return "{\"status\":\"ok\",\"rate\":\""+ rate +"\"}";
     }
+
+
+
 
 
 
