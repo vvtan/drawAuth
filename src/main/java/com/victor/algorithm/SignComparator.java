@@ -34,6 +34,29 @@ public class SignComparator {
     }
 
     public static SignComparator build(byte[][] src,byte[][] target){
+        System.out.println("src: ");
+        for (int i=0;i<100;i++){
+            for (int j=0;j<100;j++){
+                if (src[i][j]==1){
+                    System.out.print("*");
+                }else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println("target: ");
+        for (int i=0;i<100;i++){
+            for (int j=0;j<100;j++){
+                if (target[i][j]==1){
+                    System.out.print("*");
+                }else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println();
+        }
+
         return new SignComparator(src,target);
     }
 
