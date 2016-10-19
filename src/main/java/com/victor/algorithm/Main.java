@@ -24,9 +24,17 @@ public class Main {
             }
         }
         for (int i=0;i<100;i++){
-            System.out.println(Arrays.toString(data1[i]));
+            for (int j=0;j<100;j++){
+                if (data1[i][j]==1){
+                    System.out.print("*");
+                }else {
+                    System.out.print(".");
+                }
+            }
+            System.out.println();
         }
-        System.out.println(CompareTools.simpleMatch(data1,data2));
-        System.out.println(CompareTools.moveMatch(data1,data2));
+        SignComparator comparator = SignComparator.build(data1,data2);
+        System.out.println(comparator.simpleMatch());
+        System.out.println(comparator.moveMatch());
     }
 }
