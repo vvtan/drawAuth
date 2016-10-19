@@ -98,12 +98,7 @@
 		}
 
 		function saveSignature() {
-			$('#signature').empty();
-			var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
-			var img = $('<img>').attr('src', dataUrl);
-			$('#signature').append($('<p>').text("Here's your signature:"));
-			$('#signature').append(img);
-			$("#fullScreen,#floatLayer").remove();
+			commitData();
 		}
 
 		function add(a, b) {
@@ -135,6 +130,35 @@
 				}
 			}
 			return data_array;
+		}
+
+		function getData(){
+			var c = $('canvas')[0];
+			var raw = getCanvasRawData(c);
+			var data = parseCanvasData(raw.data, 300);
+			return scaleData(data);
+		}
+
+		var commit_url = '';
+
+		function commitData(){
+			$.ajax({
+				url: commit_url,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({'draw': getData()}),
+				dataType: 'json'
+			}).success(function(data){
+				if (data.status='success'){
+					$("#fullScreen,#floatLayer").remove();
+					alert('匹配成功！');
+				}else{
+					alert('匹配失敗！');
+				}
+					})
+					.error(function(data){
+						alert('提交失败！');
+					});
 		}
 	</script>
 </body>
