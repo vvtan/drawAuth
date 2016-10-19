@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML5 canvas支持触摸屏的签名涂鸦插件|DEMO_jQuery之家-自由分享jQuery、html5、css3的插件库</title>
+	<link rel="stylesheet" href="https://bencentra.github.io/jq-signature/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/default.css">
+	<!--[if IE]>
+		<script src="http://cdn.bootcss.com/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="htmleaf-container">
+		<header class="htmleaf-header">
+			<h1>创意验证码<span>我们都爱画</span></h1>
+		</header>
+		<div class="container">
+			<div class="row">
+		<div class="col-xs-12">
+			<h3>留言：</h3>
+			<div class="text-input">
+				<textarea id="content" name="content" placeholder="Input your message ..." rows="5"></textarea>
+			</div>
+		</div>
+	</div>
+			<div>
+				<div>
+					<h3>验证码：</h3>
+					<div class="js-signature"></div>
+					<p><button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear Canvas</button>&nbsp;<button id="saveBtn" class="btn btn-default" onclick="saveSignature();" disabled>Save Signature</button></p>
+				</div>
+			</div>
+	</div>
+	
+	<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="js/jq-signature.js"></script>
+	<script type="text/javascript">
+		$(document).on('ready', function() {
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature({
+					width: 300,
+					height: 300
+				});
+			}
+		});
+
+		function clearCanvas() {
+			$('.js-signature').eq(0).jqSignature('clearCanvas');;
+			$('#saveBtn').attr('disabled', true);
+		}
+
+		function saveSignature() {
+			$('#signature').empty();
+			var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+			var img = $('<img>').attr('src', dataUrl);
+			$('#signature').append($('<p>').text("Here's your signature:"));
+			$('#signature').append(img);
+		}
+
+		$('.js-signature').eq(0).on('jq.signature.changed', function() {
+			$('#saveBtn').attr('disabled', false);
+		});
+	</script>
+	<script>
+		function add(a, b) {
+			return a + b;
+		}
+
+		function getCanvasRawData(c){
+			var ctx = c.getContext('2d');
+			return ctx.getImageData(0, 0, c.width, c.height);
+		}
+		
+		function parseCanvasData(data, len_of_row){
+			var data_array = [];
+			var pixel_array = [];
+			var row = [];
+			for (var i=0; i < data.length; i++) {
+				pixel_array.push(data[i]);
+				if ((i + 1) % 4 == 0) {
+					var value = 0;
+					if (pixel_array.reduce(add, 0)) {
+						value = 1;
+					}
+					row.push(value);
+					pixel_array = [];
+				}
+				if (row.length == len_of_row) {
+					data_array.push(row);
+					row = [];
+				}
+			}
+			return data_array;
+		}
+	</script>
+</body>
+</html>

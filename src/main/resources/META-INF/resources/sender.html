@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HTML5 canvas支持触摸屏的签名涂鸦插件|DEMO_jQuery之家-自由分享jQuery、html5、css3的插件库</title>
+	<link rel="stylesheet" href="https://bencentra.github.io/jq-signature/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/default.css">
+	<!--[if IE]>
+		<script src="http://cdn.bootcss.com/html5shiv/3.7/html5shiv.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div class="htmleaf-container">
+		<header class="htmleaf-header">
+			<h1>创意验证码<span>我们都爱画</span></h1>
+		</header>
+		<div class="container">
+			<div class="row">
+		<div class="col-xs-12">
+			<h3>留言：</h3>
+			<div class="text-input">
+				<textarea id="content" name="content" placeholder="Input your message ..." rows="5"></textarea>
+			</div>
+		</div>
+	</div>
+			<div>
+				<div>
+					<h3>验证码：</h3>
+					<div class="js-signature"></div>
+					<p><button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">清空</button>&nbsp;<button id="saveBtn" class="btn btn-default" onclick="commitData();" disabled>提交</button></p>
+				</div>
+			</div>
+	</div>
+	
+	<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="js/jq-signature.js"></script>
+	<script type="text/javascript">
+		var canvas_edge_length = 300;
+		var target_edge_length = 100;
+		var commit_url = '';
+
+		$(document).on('ready', function() {
+			if ($('.js-signature').length) {
+				$('.js-signature').jqSignature({
+					width: canvas_edge_length,
+					height: canvas_edge_length
+				});
+			}
+		});
+
+		function clearCanvas() {
+			$('.js-signature').eq(0).jqSignature('clearCanvas');;
+			$('#saveBtn').attr('disabled', true);
+		}
+
+		function saveSignature() {
+			$('#signature').empty();
+			var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+			var img = $('<img>').attr('src', dataUrl);
+			$('#signature').append($('<p>').text("Here's your signature:"));
+			$('#signature').append(img);
+		}
+
+		$('.js-signature').eq(0).on('jq.signature.changed', function() {
+			$('#saveBtn').attr('disabled', false);
+		});
+
+		function add(a, b) {
+			return a + b;
+		}
+
+		function getCanvasRawData(c){
+			var ctx = c.getContext('2d');
+			return ctx.getImageData(0, 0, c.width, c.height);
+		}
+		
+		function parseCanvasData(data){
+			var data_array = [];
+			var pixel_array = [];
+			var row = [];
+			for (var i=0; i < data.length; i++) {
+				pixel_array.push(data[i]);
+				if ((i + 1) % 4 == 0) {
+					var value = 0;
+					if (pixel_array.reduce(add, 0)) {
+						value = 1;
+					}
+					row.push(value);
+					pixel_array = [];
+				}
+				if (row.length == canvas_edge_length) {
+					data_array.push(row);
+					row = [];
+				}
+			}
+			return data_array;
+		}
+
+		function scaleData(data_array){
+			var scaled_array = [];
+			var scale = parseInt(canvas_edge_length / target_edge_length);
+			for (var i=0; i < canvas_edge_length; i+=scale) {
+				for (var j=0; j < canvas_edge_length; j+=scale) {
+					var num_of_one = 0;
+					for (var m=i; m < i + scale; m++) {
+						for (var n=j; n < j + scale; n++) {
+							if (data_array[m][n]) {
+								num_of_one++;
+							}
+						}
+					}
+					var value = 0;
+					if (num_of_one > scale * scale * 0.6) {
+						value = 1;
+					}
+					scaled_array.push(value);
+				}
+			}
+
+			var data = [];
+			var inner = [];
+			for (var i=0; i < scaled_array.length; i++) {
+				inner.push(scaled_array[i]);
+				if ((i + 1) % target_edge_length == 0) {
+					data.push(inner);
+					inner = []
+				}
+			}
+
+			return data;
+		}
+
+		function getData(){
+			var c = $('canvas')[0];
+			var raw = getCanvasRawData(c);
+			var data = parseCanvasData(raw.data, 300);
+			return scaleData(data);
+		}
+
+		function commitData(){
+			$.ajax({
+				url: commit_url,
+				type: 'POST',
+				data: JSON.stringify(getData()),
+				dataType: 'json'
+			})
+			.success(function(data){
+				alert('提交成功！');
+			})
+			.error(function(data){
+				alert('提交失败！');
+			});
+		}
+	</script>
+</body>
+</html>
