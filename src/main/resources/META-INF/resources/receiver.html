@@ -71,6 +71,8 @@
 	<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/jq-signature.js"></script>
 	<script type="text/javascript">
+		var canvas_edge_length = 300;
+		var target_edge_length = 100;
 		$(document).ready(function() {
 			//清除之前的样式
 			$("#fullScreen,#floatLayer").remove();
@@ -83,8 +85,8 @@
             );
 			if ($('.js-signature').length) {
 				$('.js-signature').jqSignature({
-					width: 300,
-					height: 300
+					width: canvas_edge_length,
+					height: canvas_edge_length
 				});
 			}
 			$('.js-signature').eq(0).on('jq.signature.changed', function() {
@@ -144,7 +146,7 @@
 			return ctx.getImageData(0, 0, c.width, c.height);
 		}
 		
-		function parseCanvasData(data, len_of_row){
+		function parseCanvasData(data){
 			var data_array = [];
 			var pixel_array = [];
 			var row = [];
@@ -158,7 +160,7 @@
 					row.push(value);
 					pixel_array = [];
 				}
-				if (row.length == len_of_row) {
+				if (row.length == canvas_edge_length) {
 					data_array.push(row);
 					row = [];
 				}
@@ -169,7 +171,7 @@
 		function getData(){
 			var c = $('canvas')[0];
 			var raw = getCanvasRawData(c);
-			var data = parseCanvasData(raw.data, 300);
+			var data = parseCanvasData(raw.data);
 			return scaleData(data);
 		}
 
