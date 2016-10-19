@@ -40,6 +40,14 @@ public class SignComparator {
     public float match(){
         float result;
         result = simpleMatch();
+        if (result>0.7){
+            return result;
+        }
+        result = moveMatch();
+        if (result>=0.7){
+            return result;
+        }
+        result = smallMatch();
 
         return result;
     }
