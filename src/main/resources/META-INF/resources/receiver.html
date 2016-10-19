@@ -186,9 +186,9 @@
 				data: JSON.stringify({'draw': getData(),'id':id}),
 				dataType: 'json'
 			}).success(function(data){
-				if (data.status='success'){
-					alert(data.rate)
-//					$("#fullScreen,#floatLayer").remove();
+				if (data.status=='ok'){
+					$("#fullScreen,#floatLayer").remove();
+					alert('匹配成功！');
 				}else{
 					alert('匹配失敗！');
 				}
