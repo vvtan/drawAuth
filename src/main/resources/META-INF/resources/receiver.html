@@ -187,8 +187,8 @@
 				dataType: 'json'
 			}).success(function(data){
 				if (data.status='success'){
-					$("#fullScreen,#floatLayer").remove();
-					alert('匹配成功！');
+					alert(data.rate)
+//					$("#fullScreen,#floatLayer").remove();
 				}else{
 					alert('匹配失敗！');
 				}

@@ -72,7 +72,7 @@ public class SignComparator {
 //        }
 //        result = smallMatch();
 
-        return Math.max(Math.max(simpleMatch(),moveMatch()),moveMatch());
+        return Math.max(Math.max(simpleMatch(),moveMatch()),smallMatch());
     }
 
     public float simpleMatch(){
