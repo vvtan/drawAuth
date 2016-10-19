@@ -31,6 +31,8 @@ public class SignComparator {
                 }
             }
         }
+        compactSrc = compact(src);
+        compactTarget = compact(target);
     }
 
     public static SignComparator build(byte[][] src,byte[][] target){
@@ -66,9 +68,9 @@ public class SignComparator {
     }
 
     public float simpleMatch(){
-        if (!isSizeNear()){
-            return 0;
-        }
+//        if (!isSizeNear()){
+//            return 0;
+//        }
         float match_1 = 0;
         float match_0 = 0;
         float total_1 = 0;
@@ -101,15 +103,13 @@ public class SignComparator {
     }
 
     public float moveMatch(){
-        if (!isSizeNear()){
-            return 0;
-        }
+//        if (!isSizeNear()){
+//            return 0;
+//        }
         float match_1 = 0.00f;
         float match_0 = 0.00f;
         float total_1 = 0.00f;
         float total_0 = 0.00f;
-        compactSrc = compact(src);
-        compactTarget = compact(target);
 //        System.out.println(compactSrc.size());
 //        System.out.println(compactTarget.size());
         int min = compactSrc.size()<=compactTarget.size()?compactSrc.size():compactTarget.size();
@@ -204,22 +204,22 @@ public class SignComparator {
         List<Integer> shape = new ArrayList<>();
         boolean flag = false;
         Integer line=0;
-        for (int i=0;i<compactSrc.size();i++){
+        for (int i=0;i<data.size();i++){
             if (flag){
-                if (compactSrc.get(i)==1){
+                if (data.get(i)==1){
                     line++;
                 }else {
                     shape.add(line);
                     flag = false;
                 }
             }else {
-                if (compactSrc.get(i)==1){
+                if (data.get(i)==1){
                     line = 0;
                     line++;
                     flag = true;
                 }
             }
-            if (flag && i==compactSrc.size()-1){
+            if (flag && i==data.size()-1){
                 shape.add(line);
             }
         }
