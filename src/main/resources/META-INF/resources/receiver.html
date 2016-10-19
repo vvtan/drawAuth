@@ -105,6 +105,40 @@
 			return a + b;
 		}
 
+		function scaleData(data_array){
+			var scaled_array = [];
+			var scale = parseInt(canvas_edge_length / target_edge_length);
+			for (var i=0; i < canvas_edge_length; i+=scale) {
+				for (var j=0; j < canvas_edge_length; j+=scale) {
+					var num_of_one = 0;
+					for (var m=i; m < i + scale; m++) {
+						for (var n=j; n < j + scale; n++) {
+							if (data_array[m][n]) {
+								num_of_one++;
+							}
+						}
+					}
+					var value = 0;
+					if (num_of_one > scale * scale * 0.6) {
+						value = 1;
+					}
+					scaled_array.push(value);
+				}
+			}
+
+			var data = [];
+			var inner = [];
+			for (var i=0; i < scaled_array.length; i++) {
+				inner.push(scaled_array[i]);
+				if ((i + 1) % target_edge_length == 0) {
+					data.push(inner);
+					inner = []
+				}
+			}
+
+			return data;
+		}
+
 		function getCanvasRawData(c){
 			var ctx = c.getContext('2d');
 			return ctx.getImageData(0, 0, c.width, c.height);
