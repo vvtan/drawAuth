@@ -5,6 +5,8 @@ import com.victor.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,16 @@ public class AuthController {
         auth.setImage_matrix("图片矩阵");
         auth.setRelation_check("关联验证");
         authService.saveAuth(auth);
+        short a[][]=new short[100][100];
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                if (i==j){
+                    a[i][j] = 1;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(a[0]));
+        System.out.println(Arrays.asList(a[0]));
         return auth;
     }
 
@@ -33,6 +45,7 @@ public class AuthController {
     public Map<String, String> handleException(Exception e) {
         Map<String, String> response = new HashMap<>();
         response.put("msg", e.getMessage());
+        e.printStackTrace();
         return response;
     }
 }
