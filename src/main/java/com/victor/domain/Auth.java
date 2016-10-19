@@ -28,4 +28,7 @@ public class Auth implements Serializable {
     @Column
     private String relation_check;
 
+    @Column
+    private String message;
+
 }

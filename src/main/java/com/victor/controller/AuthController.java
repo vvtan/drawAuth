@@ -1,11 +1,17 @@
 package com.victor.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.URLCodec;
 import com.victor.domain.Auth;
 import com.victor.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +33,7 @@ public class AuthController {
         auth.setImage_matrix("图片矩阵");
         auth.setRelation_check("关联验证");
         authService.saveAuth(auth);
-        short a[][]=new short[100][100];
+        short a[][] = new short[100][100];
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {
                 if (i==j){
@@ -39,6 +45,37 @@ public class AuthController {
         System.out.println(Arrays.asList(a[0]));
         return auth;
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/share")
+    public String share(@RequestBody String jsonData){
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        Auth auth = new Auth();
+        String draw = jsonObject.getString("draw");
+        JSONArray drawArray = JSONObject.parseArray(draw);
+        byte matrix[][] = new byte[100][100];
+        for (int i = 0; i < 100; i++) {
+            JSONArray tmp = drawArray.getJSONArray(i);
+            for (int j = 0; j < 100; j++) {
+                matrix[i][j] = tmp.getByte(j);
+            }
+        }
+        String message = jsonObject.getString("message");
+        auth.setImage_matrix(draw);
+        auth.setMessage(message);
+        Auth authNew = authService.saveAuth(auth);
+        String shareURL = "http://192.168.1.202:8099/receiver.html?id=" + authNew.getId();
+        authNew.setShare_resources(shareURL);
+        String redirect = "http://127.0.0.1:8099/success.html";
+        return "{\"status\":\"ok\",\"shareURL\":\""+ redirect + "?url="+ shareURL +"\"}";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/auth")
+    public String auth(@RequestBody String jsonData){
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        return "{\"status\":\"ok\"}";
+    }
+
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(Exception.class)

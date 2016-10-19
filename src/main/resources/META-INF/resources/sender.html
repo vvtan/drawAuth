@@ -39,7 +39,7 @@
 	<script type="text/javascript">
 		var canvas_edge_length = 300;
 		var target_edge_length = 100;
-		var commit_url = '';
+		var commit_url = 'http://127.0.0.1:8099/share';
 
 		$(document).on('ready', function() {
 			if ($('.js-signature').length) {
@@ -143,10 +143,16 @@
 			$.ajax({
 				url: commit_url,
 				type: 'POST',
-				data: JSON.stringify(getData()),
+				contentType: 'application/json',
+				data: JSON.stringify({'draw': getData(), 'message': $('#content').val()}),
 				dataType: 'json'
 			})
 			.success(function(data){
+				if (data.status == 'ok') {
+					window.location.href = data.shareURL;
+				} else {
+					alert('发生了点错误...');
+				}
 				alert('提交成功！');
 			})
 			.error(function(data){
