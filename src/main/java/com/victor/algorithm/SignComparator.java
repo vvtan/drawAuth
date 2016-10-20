@@ -36,12 +36,10 @@ public class SignComparator {
 
     public float match(){
 
-        return smallMatch();
+        return Math.max(Math.max(simpleMatch(),moveMatch()),smallMatch());
     }
+
     public float simpleMatch(){
-//        if (!isSizeNear()){
-//            return 0;
-//        }
         float match_1 = 0;
         float match_0 = 0;
         float total_1 = 0;
@@ -232,7 +230,6 @@ public class SignComparator {
                 }
             }
         }
-        print(bigMap);
         if (bigSize==bitMapSize){
             return bigMap;
         }
