@@ -229,8 +229,8 @@ public class SignComparator {
                 if (data[i][j]==1){
                     int x = Math.round(heightFactor*(i-top));
                     int y = Math.round(widthFactor*(j-left));
-                    x = x>bigSize?bigSize-1:x;
-                    y = y>bigSize?bigSize-1:y;
+                    x = x>=bigSize?bigSize-1:x;
+                    y = y>=bigSize?bigSize-1:y;
                     bigMap[x][y] = 1;
                 }
             }
