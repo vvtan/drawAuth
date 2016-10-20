@@ -35,6 +35,7 @@ a{color: #2fa0ec;text-decoration: none;outline: none;}
 a:hover,a:focus{color:#74777b;}
 
 .htmleaf-container{
+	max-width: 500px;
 	margin: 0 auto;
 	overflow: hidden;
 }
