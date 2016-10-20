@@ -57,7 +57,7 @@ public class AuthController {
         Auth authNew = authService.saveAuth(auth);
         String shareURL = "http://192.168.1.202:8099/receiver.html?id=" + authNew.getId();
         authNew.setShare_resources(shareURL);
-        String redirect = "http://127.0.0.1:8099/success.html";
+        String redirect = "/success.html";
         Map<String, Object> result = new HashMap<>();
         result.put("status", "ok");
         result.put("shareURL", redirect + "?url="+ shareURL);
