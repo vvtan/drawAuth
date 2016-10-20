@@ -158,9 +158,6 @@ public class SignComparator {
         }else {
             result = match_1/total_1+match_0/total_0;
         }
-        print(src_16);
-        print(target_16);
-
         System.out.println("small:"+result);
 
         return result;
@@ -253,7 +250,7 @@ public class SignComparator {
                 map_16[i][j] = merge(sample);
             }
         }
-
+        print(map_16);
         return map_16;
     }
 
@@ -265,7 +262,7 @@ public class SignComparator {
                 shot++;
             }
         }
-        if (Math.round(((float) shot)/len)>0.05){
+        if (((float) shot)/len>0.1){
             return 1;
         }
         return 0;
