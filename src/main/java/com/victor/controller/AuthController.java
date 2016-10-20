@@ -60,7 +60,7 @@ public class AuthController {
         String redirect = "/success.html";
         Map<String, Object> result = new HashMap<>();
         result.put("status", "ok");
-        result.put("shareURL", redirect + "?url="+ shareURL);
+        result.put("shareURL", redirect + "?url=" + shareURL + "&msg=" + message);
 //        return "{\"status\":\"ok\",\"shareURL\":\""+ redirect + "?url="+ shareURL +"\"}";
         return result;
     }
