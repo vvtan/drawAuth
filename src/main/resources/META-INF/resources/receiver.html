@@ -59,12 +59,13 @@
 			<h1>创意验证码<span>我们都爱画</span></h1>
 		</header>
 		<div class="container">
-			<div class="row">
+			<div class="row" align="center">
 		<div class="col-xs-4">
 			<h3>留言：</h3>
 			<div id="msg" class="text-input">
 
 			</div>
+			<br><br>
 		</div>
 		<div id="shareimg" style="visibility: hidden">
 			<img id="simg" src="images/shareimg.png" width="40%"/>
@@ -82,11 +83,11 @@
 			//将searchStr字符串分割成数组，数组中的每一个元素为一个参数和参数值
 			var searchs = searchStr.split("&");
 			var share_img = searchs[2].split("=");
-			if (share_img[1]){
+			if (share_img[1] && share_img[1] != "undefined"){
 				document.getElementById('simg').src = "images/" + share_img[1];
 			}
 			var msg = searchs[1].split("=")[1];
-			document.getElementById('msg').text = msg;
+			document.getElementById('msg').innerHTML = msg;
 	</script>
 	<script type="text/javascript">
 		var canvas_edge_length = 300;
@@ -207,7 +208,6 @@
 				if (data.status=='ok' && data.rate >= 0.6){
 					$("#fullScreen,#floatLayer").remove();
 					document.getElementById("shareimg").style.visibility="visible";
-					alert(data.rate);
 				}else{
 					alert('匹配失敗！');
 				}
