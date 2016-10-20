@@ -227,7 +227,7 @@ public class SignComparator {
         for (int i=top;i<=bottom;i++){
             for (int j=left;j<=right;j++){
                 if (data[i][j]==1){
-                    bigMap[Math.round((i-top)*widthFactor)][Math.round((j-left)*heightFactor)] = 1;
+                    bigMap[Math.round(heightFactor*(i-top))][Math.round(widthFactor*(j-left))] = 1;
                 }
             }
         }
