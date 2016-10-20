@@ -7,6 +7,7 @@ import java.util.List;
  * 比较图片
  * Created by Caixinning on 2016/10/19.
  */
+@SuppressWarnings("unused")
 public class SignComparator {
 
     private byte[][] src;
@@ -35,9 +36,8 @@ public class SignComparator {
 
     public float match(){
 
-        return Math.max(Math.max(simpleMatch(),moveMatch()),smallMatch());
+        return smallMatch();
     }
-
     public float simpleMatch(){
 //        if (!isSizeNear()){
 //            return 0;
