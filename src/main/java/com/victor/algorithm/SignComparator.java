@@ -36,7 +36,7 @@ public class SignComparator {
 
     public float match(){
 
-        return Math.max(Math.max(simpleMatch(),moveMatch()),smallMatch());
+        return smallMatch();
     }
 
     public float simpleMatch(){
