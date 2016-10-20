@@ -66,7 +66,7 @@ public class SignComparator {
                 }
             }
         }
-        float rs = match_1/total_1+match_0/total_0;
+        float rs = (1.2f*match_1)/total_1+(0.8f*match_0)/total_0;
         System.out.println("simple:"+rs);
         return rs;
     }
@@ -108,7 +108,7 @@ public class SignComparator {
         }else if (total_0==0){
             result = 2*match_1/total_1;
         }else {
-            result = match_1/total_1+match_0/total_0;
+            result =(1.2f*match_1)/total_1+(0.8f*match_0)/total_0;
         }
         System.out.println("move:"+result);
         return result;
@@ -154,7 +154,7 @@ public class SignComparator {
         }else if (total_0==0){
             result = 2*match_1/total_1;
         }else {
-            result = match_1/total_1+match_0/total_0;
+            result = (1.2f*match_1)/total_1+(0.8f*match_0)/total_0;
         }
         System.out.println("small:"+result);
 
