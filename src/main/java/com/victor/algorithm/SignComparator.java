@@ -25,28 +25,10 @@ public class SignComparator {
     }
 
     public static SignComparator build(byte[][] src,byte[][] target){
-        System.out.println("src: ");
-        for (int i=0;i<100;i++){
-            for (int j=0;j<100;j++){
-                if (src[i][j]==1){
-                    System.out.print("*");
-                }else {
-                    System.out.print(".");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("target: ");
-        for (int i=0;i<100;i++){
-            for (int j=0;j<100;j++){
-                if (target[i][j]==1){
-                    System.out.print("*");
-                }else {
-                    System.out.print(".");
-                }
-            }
-            System.out.println();
-        }
+//        System.out.println("src: ");
+//        print(src);
+//        System.out.println("target: ");
+//        print(target);
 
         return new SignComparator(src,target);
     }
@@ -92,18 +74,12 @@ public class SignComparator {
     }
 
     public float moveMatch(){
-//        if (!isSizeNear()){
-//            return 0;
-//        }
         float match_1 = 0.00f;
         float match_0 = 0.00f;
         float total_1 = 0.00f;
         float total_0 = 0.00f;
-//        System.out.println(compactSrc.size());
-//        System.out.println(compactTarget.size());
         int min = compactSrc.size()<=compactTarget.size()?compactSrc.size():compactTarget.size();
         int max = compactSrc.size()>=compactTarget.size()?compactSrc.size():compactTarget.size();
-//        System.out.println(min);
         for (int i=0;i<min;i++){
             if (compactSrc.get(i).equals(compactTarget.get(i))){
                 if (compactSrc.get(i)==1){
@@ -148,7 +124,7 @@ public class SignComparator {
         byte[][] src_16 = toBit(src);
         byte[][] target_16 = toBit(target);
         for (int i=0;i<bitMapSize;i++){
-            for (int j=0;j<bitMapSize;i++){
+            for (int j=0;j<bitMapSize;j++){
                 if (src_16[i][j]==target_16[i][j]){
                     if (src_16[i][j]==1){
                         match_1++;
@@ -159,7 +135,7 @@ public class SignComparator {
             }
         }
         for (int i=0;i<bitMapSize;i++){
-            for (int j=0;j<bitMapSize;i++){
+            for (int j=0;j<bitMapSize;j++){
                 if (src_16[i][j]==1){
                     total_1++;
                 }else {
@@ -182,8 +158,11 @@ public class SignComparator {
         }else {
             result = match_1/total_1+match_0/total_0;
         }
+        print(src_16);
+        print(target_16);
 
         System.out.println("small:"+result);
+
         return result;
     }
 
@@ -248,7 +227,7 @@ public class SignComparator {
         for (int i=top;i<=bottom;i++){
             for (int j=left;j<=right;j++){
                 if (data[i][j]==1){
-                    bigMap[Math.round((i-top))][Math.round((j-left))] = 1;
+                    bigMap[Math.round((i-top)*widthFactor)][Math.round((j-left)*heightFactor)] = 1;
                 }
             }
         }
