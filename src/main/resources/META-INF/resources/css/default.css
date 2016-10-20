@@ -21,11 +21,15 @@ body, html { font-size: 100%; 	padding: 0; margin: 0;}
 }
 
 body{
-	background: #f9f7f6;
-	color: #404d5b;
+	background: #0078f0;
+	color: #FFF;
 	font-weight: 500;
 	font-size: 1.05em;
 	font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "wenquanyi micro hei", "Hiragino Sans GB", "Hiragino Sans GB W3", "FontAwesome", sans-serif;
+}
+.container {
+	padding: 20px;
+	margin: 0 auto;
 }
 a{color: #2fa0ec;text-decoration: none;outline: none;}
 a:hover,a:focus{color:#74777b;}
@@ -52,7 +56,7 @@ a:hover,a:focus{color:#74777b;}
 .bgcolor-12{ background: #3498DB; color: #fff;}/*light blue*/
 /* Header */
 .htmleaf-header{
-	padding: 1em 190px 1em;
+	padding-top: 20px;
 	letter-spacing: -1px;
 	text-align: center;
 }
@@ -185,25 +189,42 @@ a:hover,a:focus{color:#74777b;}
 .icon-htmleaf-arrow-forward-outline:before {
 	content: "\e5001";
 }
+textarea {
+	padding: 20px;
+	font-size: 1em;
+	border: 0;
+	width: 300px;
+	outline: none;
+	color: #555454;
+	font-family: DengXian, 'Microsoft Yahei', Tahoma, Arial, Helvetica, Simsun, STHeiti;
+}
+button {
+	padding: 15px 40px;
+	background-color: #fab341;
+	border: 0;
+	font-family: DengXian, 'Microsoft Yahei', Tahoma, Arial, Helvetica, Simsun, STHeiti;
+	font-size: 1em;
+	color: #FFF;
+}
 
 @media screen and (max-width: 50em) {
 	.htmleaf-header {
-		padding: 3em 10% 4em;
+		padding-top: 20px;
 	}
 	.htmleaf-header h1 {
-        font-size:2em;
+        font-size: 2.4em;
     }
 }
 
 
 @media screen and (max-width: 40em) {
 	.htmleaf-header h1 {
-		font-size: 1.5em;
+		font-size: 2.2em;
 	}
 }
 
 @media screen and (max-width: 30em) {
     .htmleaf-header h1 {
-        font-size:1.2em;
+        font-size: 2em;
     }
 }
