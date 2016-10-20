@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class AuthController {
         String redirect = "/success.html";
         Map<String, Object> result = new HashMap<>();
         result.put("status", "ok");
-        result.put("shareURL", redirect + "?url=" + shareURL + "&msg=" + message);
+        result.put("shareURL", redirect + "?url=" + shareURL + "&msg=" + URLEncoder.encode(message));
 //        return "{\"status\":\"ok\",\"shareURL\":\""+ redirect + "?url="+ shareURL +"\"}";
         return result;
     }
